@@ -46,7 +46,9 @@ public class MainActivity extends BaseWebActivity {
             @Override
             public void onLoginSuccess(XMUser xmUser, Object o) {
                 Log.d(TAG, "onLoginSuccess: " + xmUser.getUserID());
-                doStartWeb(xmUser);
+                //doStartWeb(xmUser);
+                currentLoginUser=xmUser;
+                javascriptCall("doLogin",xmUser);
             }
 
             @Override
@@ -78,7 +80,7 @@ public class MainActivity extends BaseWebActivity {
             public void onInitSuccess() {
                 //初始化成功之后才可调用其他接口
                 Log.d(TAG, "onInitSuccess: ");
-                doLogin(null);
+                doStartWeb();
             }
 
             @Override
@@ -112,6 +114,7 @@ public class MainActivity extends BaseWebActivity {
             @Override
             public void onSuccess(String sucessInfo) {
                 // 此处回调仅代表用户已发起支付操作，不代表是否充值成功，具体充值是否到账需以服务器间通知为准；
+                javascriptCall("doPay",sucessInfo);
             }
 
             @Override
@@ -134,18 +137,11 @@ public class MainActivity extends BaseWebActivity {
         });
     }
 
-    protected void doStartWeb(XMUser xmUser) {
-        this.currentLoginUser=xmUser;
-
+    protected void doStartWeb() {
         Date date=new Date();
         long t=date.getTime();
-        String url =String.format("http://gate.shushanh5.lingyunetwork.com/gate/micro/login.aspx?t=%d&userId=%s&p=lingjin",t,xmUser.getUserID());
+        String url =String.format("http://gate.shushanh5.lingyunetwork.com/gate/micro/login.aspx?t=%d&p=lingjin",t);
         Log.d(TAG, "doStartWeb: "+url);
-        webView.loadUrl(url);
-    }
-
-    protected void  doStartTestWeb(){
-        String url="http://192.168.1.51/webNative.html";
         webView.loadUrl(url);
     }
 
