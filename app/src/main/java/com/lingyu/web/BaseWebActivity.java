@@ -41,6 +41,9 @@ public class BaseWebActivity extends Activity {
         viewLayout.setLayoutParams(layoutParams);
         this.setContentView(viewLayout);
 
+
+        WebView.setWebContentsDebuggingEnabled(true);
+
         webView = new WebView(this);
 
         bindWebView(webView);
@@ -103,11 +106,15 @@ public class BaseWebActivity extends Activity {
      * @param value
      */
     protected void javascriptCall(String key, Object value){
+        String json="";
         if((value instanceof  String) || (value instanceof Integer) || (value instanceof Boolean) || (value instanceof Float) ){
+            json=value.toString();
         }else {
-            value = toJSON(value).toString();
+            json = toJSON(value).toString();
         }
-        webView.loadUrl("javascript:LingyuSDK.NativeBack(\""+key+"\",\""+value+"\")");
+
+        Log.d(TAG, "javascriptCall:"+key+":"+json);
+       webView.loadUrl("javascript:LingyuSDK.NativeBack('"+key+"','"+json+"')");
     }
 
     /**

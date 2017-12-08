@@ -18,6 +18,8 @@ import com.xinmei365.game.proxy.exit.LJExitCallback;
 import com.xinmei365.game.proxy.init.XMInitCallback;
 import com.xinmei365.game.proxy.pay.XMPayParams;
 
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.Map;
 
@@ -48,7 +50,19 @@ public class MainActivity extends BaseWebActivity {
                 Log.d(TAG, "onLoginSuccess: " + xmUser.getUserID());
                 //doStartWeb(xmUser);
                 currentLoginUser=xmUser;
-                javascriptCall("doLogin",xmUser);
+                try {
+                    JSONObject json = new JSONObject();
+                    json.put("username", xmUser.getUsername());
+                    json.put("uid", xmUser.getUserID());
+                    json.put("token", xmUser.getToken());
+                    json.put("productCode", xmUser.getProdcutCode());
+                    json.put("channelCode", xmUser.getChannelCode());
+                    json.put("channelUserId", xmUser.getChannelUserId());
+
+                    javascriptCall("doLogin", json.toString());
+                }catch (Exception ex){
+
+                }
             }
 
             @Override
@@ -101,11 +115,16 @@ public class MainActivity extends BaseWebActivity {
     @Override
     protected void doPay(Map o) {
         XMPayParams params = new XMPayParams();
-        int rmb=Integer.parseInt((String) o.get("rmb"));
+        float rmb=Float.parseFloat((String) o.get("rmb"));
+        int yuan=(int)(rmb*100);
 
-        params.setAmount(rmb);//支付金额,单位人民币分;
-        params.setItemName("元");//商品名称;
-        params.setCount(rmb);//购买数量;
+        int count=(int)rmb;
+        if(count<1){
+            count=1;
+        }
+        params.setAmount(yuan);//支付金额,单位人民币分;
+        params.setItemName("元宝");//商品名称;
+        params.setCount(count);//购买数量;
         params.setCustomParam((String)o.get("extra"));//自定义参数;
         params.setCallbackUrl((String)o.get("notifyurl"));//支付结果通知地址,即游戏服务器地址,交易结束后，我方会向该地址发送通知，通知交易的金额， customParams等信息 ;
         params.setChargePointName("");//计费点名称，用于有计费        点的渠道，没有可传空
@@ -141,6 +160,8 @@ public class MainActivity extends BaseWebActivity {
         Date date=new Date();
         long t=date.getTime();
         String url =String.format("http://gate.shushanh5.lingyunetwork.com/gate/micro/login.aspx?t=%d&p=lingjin",t);
+        //url="file:///android_asset/test.html";
+
         Log.d(TAG, "doStartWeb: "+url);
         webView.loadUrl(url);
     }

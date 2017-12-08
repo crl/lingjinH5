@@ -25,7 +25,9 @@
         android:theme="@style/AppTheme">
         <meta-data android:name="XMGAME_PRODUCT_CODE" android:value="p3693" />
         <meta-data android:name="XMGAME_CHANNEL_CODE" android:value="8c81c112e69c44d0a50918c746ce7434" />
-        <activity android:name="lingyu.com.lingjinh5.MainActivity" android:configChanges="orientation|keyboardHidden|screenSize" android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+        <activity android:name="lingyu.com.lingjinh5.MainActivity" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.xinmei365.game.proxy.XMSDKLoginActivity" />
         <activity android:name="lingyu.com.lingjinh5.MySplashActivity"
