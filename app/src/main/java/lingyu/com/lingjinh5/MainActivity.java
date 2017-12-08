@@ -123,7 +123,7 @@ public class MainActivity extends BaseWebActivity {
             count=1;
         }
         params.setAmount(yuan);//支付金额,单位人民币分;
-        params.setItemName("元宝");//商品名称;
+        params.setItemName("兑换币");//商品名称;
         params.setCount(count);//购买数量;
         params.setCustomParam((String)o.get("extra"));//自定义参数;
         params.setCallbackUrl((String)o.get("notifyurl"));//支付结果通知地址,即游戏服务器地址,交易结束后，我方会向该地址发送通知，通知交易的金额， customParams等信息 ;
