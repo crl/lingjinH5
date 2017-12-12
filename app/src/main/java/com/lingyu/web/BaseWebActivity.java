@@ -2,7 +2,9 @@ package com.lingyu.web;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -40,9 +42,8 @@ public class BaseWebActivity extends Activity {
         viewLayout=new FrameLayout(this);
         viewLayout.setLayoutParams(layoutParams);
         this.setContentView(viewLayout);
-
-
-        WebView.setWebContentsDebuggingEnabled(true);
+        
+        //WebView.setWebContentsDebuggingEnabled(true);
 
         webView = new WebView(this);
 
@@ -90,6 +91,13 @@ public class BaseWebActivity extends Activity {
             case "doPay":
                 doPay(map);
                 break;
+            case "doExit":
+                int v=0;
+               if(value!=null && value!=""){
+                   v=Integer.parseInt(value);
+               }
+                doExit(v==1);
+                break;
         }
     }
 
@@ -98,6 +106,23 @@ public class BaseWebActivity extends Activity {
     protected void doLogin(Map o){
     }
     protected void doPay(Map o){
+    }
+    protected void doExit(boolean isForce){
+
+        if(isForce==false){
+            AlertDialog.Builder b = new AlertDialog.Builder(this);
+            b.setTitle("提示");
+            b.setMessage("确定要退出");
+            b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    BaseWebActivity.this.finish();
+                    System.exit(0);
+                }
+            });
+            b.setNegativeButton(android.R.string.no,null);
+            b.create().show();
+        }
     }
 
     /**

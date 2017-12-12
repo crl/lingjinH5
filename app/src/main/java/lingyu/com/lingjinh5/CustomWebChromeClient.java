@@ -22,7 +22,7 @@ public class CustomWebChromeClient extends WebChromeClient {
     @Override
     public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
         AlertDialog.Builder b = new AlertDialog.Builder(activity);
-        b.setTitle("Alert");
+        b.setTitle("提示");
         b.setMessage(message);
         b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
