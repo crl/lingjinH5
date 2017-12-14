@@ -41,11 +41,15 @@ public class MainActivity extends BaseWebActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        GameProxy.getInstance().onCreate(this);
         GameProxy.getInstance().setUserListener(this, new XMUserListener() {
             @Override
             public void onLoginSuccess(XMUser xmUser, Object o) {
                 Log.d(TAG, "onLoginSuccess: " + xmUser.getUserID());
                 //doStartWeb(xmUser);
+
+                boolean isChange=currentLoginUser!=xmUser;
+
                 currentLoginUser=xmUser;
                 try {
                     JSONObject json = new JSONObject();
@@ -61,10 +65,14 @@ public class MainActivity extends BaseWebActivity {
 
                 }
 
-                HashMap map=new HashMap();
-                map.put("_id","enterServer");
+                if(isChange) {
+                    HashMap map = new HashMap();
+                    //levelUp,createRole,enterServer
+                    map.put("_id", "createRole");
+                    map.put("isTest", "1");
 
-                doNativeCall("info",map);
+                    doNativeCall("info", map);
+                }
             }
 
             @Override
@@ -87,8 +95,10 @@ public class MainActivity extends BaseWebActivity {
             @Override
             public void onLogout(Object o) {
                 Log.d(TAG, "onLogout: " + o);
-                //doStartWeb();
-                doExitGame();
+                if(webView!=null){
+                    webView.clearCache(false);
+                    webView.reload();
+                }
             }
         });
 
@@ -97,33 +107,32 @@ public class MainActivity extends BaseWebActivity {
 
     @Override
     protected void doNativeCall(String key, HashMap<String,String> map) {
-        super.doNativeCall(key, map);
-
         switch (key){
             case "info":
                 try {
                     HashMap<String,String> datas = new HashMap<>();
-                   if(map.containsKey("_id")){
-                       datas.put("_id", map.get("_id"));
+                   if(map.containsKey("isTest")==false){
+                       datas=map;
                    }else {
-                       datas.put("_id", "enterServer");
+                       String id=map.get("_id");
+                       datas.put("_id", id);
+                       datas.put("roleId", "13524696");
+                       datas.put("roleName", "方木");
+                       datas.put("roleLevel", "24");
+                       datas.put("zoneId", "1");
+                       datas.put("zoneName", "墨土1区");
+                       datas.put("balance", "88");
+                       datas.put("vip", "2");
+                       datas.put("partyName", "无尽天涯");
+                       datas.put("extra", "extra");
                    }
-                    datas.put("roleId", "13524696");
-                    datas.put("roleName", "方木");
-                    datas.put("roleLevel", "24");
-                    datas.put("zoneId", "1");
-                    datas.put("zoneName", "墨土1区");
-                    datas.put("balance", "88");
-                    datas.put("vip", "2");
-                    datas.put("partyName", "无尽天涯");
-                    datas.put("extra","extra");
 
                     JSONObject json=new JSONObject(datas);
-
                     GameProxy.getInstance().setExtData(this,json.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
                 break;
             case "doLogout":
                 GameProxy.getInstance().logout(this,null);
@@ -257,8 +266,15 @@ public class MainActivity extends BaseWebActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+//        if(currentLoginUser!=null){
+//            currentLoginUser=null;
+//            GameProxy.getInstance().logout(this,null);
+//        }
+
         GameProxy.getInstance().onDestroy(this);
     }
+
 
     @Override
     protected void onPause() {
