@@ -41,7 +41,6 @@ public class MainActivity extends BaseWebActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        GameProxy.getInstance().onCreate(this);
         GameProxy.getInstance().setUserListener(this, new XMUserListener() {
             @Override
             public void onLoginSuccess(XMUser xmUser, Object o) {
@@ -103,6 +102,8 @@ public class MainActivity extends BaseWebActivity {
         });
 
         doInit(null);
+
+        GameProxy.getInstance().onCreate(this);
     }
 
     @Override
@@ -143,7 +144,6 @@ public class MainActivity extends BaseWebActivity {
 
     @Override
     protected void doInit(Map o) {
-
         GameProxy.getInstance().init(this, new XMInitCallback() {
             @Override
             public void onInitSuccess() {
