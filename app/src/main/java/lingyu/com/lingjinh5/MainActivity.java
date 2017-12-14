@@ -47,7 +47,7 @@ public class MainActivity extends BaseWebActivity {
                 Log.d(TAG, "onLoginSuccess: " + xmUser.getUserID());
                 //doStartWeb(xmUser);
 
-                boolean isChange=currentLoginUser!=xmUser;
+                //boolean isChange=currentLoginUser!=xmUser;
 
                 currentLoginUser=xmUser;
                 try {
@@ -63,13 +63,12 @@ public class MainActivity extends BaseWebActivity {
                 }catch (Exception ex){
 
                 }
-
-                if(isChange) {
+                boolean isTest=false;
+                if(isTest) {
                     HashMap map = new HashMap();
                     //levelUp,createRole,enterServer
-                    map.put("_id", "createRole");
+                    map.put("_id", "enterServer");
                     map.put("isTest", "1");
-
                     doNativeCall("info", map);
                 }
             }
