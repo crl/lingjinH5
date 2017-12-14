@@ -42,7 +42,7 @@ public class BaseWebActivity extends Activity {
         viewLayout=new FrameLayout(this);
         viewLayout.setLayoutParams(layoutParams);
         this.setContentView(viewLayout);
-        
+
         //WebView.setWebContentsDebuggingEnabled(true);
 
         webView = new WebView(this);
@@ -75,11 +75,12 @@ public class BaseWebActivity extends Activity {
      */
     @JavascriptInterface
     public void nativeCall(String key, String value) {
-        Map map=null;
+        HashMap<String,String> map=null;
         try {
             map=toMap(value);
         }catch (Exception e){
-            map=new HashMap();
+            map=new HashMap<String,String>();
+            map.put("value",value);
         }
         Log.d(TAG, "nativeCall: "+key+","+value);
         switch (key) {
@@ -98,7 +99,13 @@ public class BaseWebActivity extends Activity {
                }
                 doExit(v==1);
                 break;
+            default:
+                doNativeCall(key,map);
+                break;
         }
+    }
+    protected void  doNativeCall(String key,HashMap<String,String> map){
+
     }
 
     protected void doInit(Map o){
@@ -116,13 +123,19 @@ public class BaseWebActivity extends Activity {
             b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    BaseWebActivity.this.finish();
-                    System.exit(0);
+                    gameExitEvent();
                 }
             });
             b.setNegativeButton(android.R.string.no,null);
             b.create().show();
+        }else {
+            gameExitEvent();
         }
+    }
+
+    protected void gameExitEvent(){
+        this.finish();
+        System.exit(0);
     }
 
     /**
@@ -180,9 +193,9 @@ public class BaseWebActivity extends Activity {
      * @return Map对象
      * @throws JSONException
      */
-    public static Map toMap(String jsonString) throws JSONException {
+    public static HashMap<String,String> toMap(String jsonString) throws JSONException {
         JSONObject jsonObject = new JSONObject(jsonString);
-        Map result = new HashMap();
+        HashMap<String,String> result = new HashMap<>();
         Iterator iterator = jsonObject.keys();
         String key = null;
         String value = null;

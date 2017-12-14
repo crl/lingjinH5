@@ -18,9 +18,11 @@ import com.xinmei365.game.proxy.exit.LJExitCallback;
 import com.xinmei365.game.proxy.init.XMInitCallback;
 import com.xinmei365.game.proxy.pay.XMPayParams;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -39,11 +41,6 @@ public class MainActivity extends BaseWebActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        doInit(null);
-    }
-
-    @Override
-    protected void doInit(Map o) {
         GameProxy.getInstance().setUserListener(this, new XMUserListener() {
             @Override
             public void onLoginSuccess(XMUser xmUser, Object o) {
@@ -63,6 +60,11 @@ public class MainActivity extends BaseWebActivity {
                 }catch (Exception ex){
 
                 }
+
+                HashMap map=new HashMap();
+                map.put("_id","enterServer");
+
+                doNativeCall("info",map);
             }
 
             @Override
@@ -85,9 +87,53 @@ public class MainActivity extends BaseWebActivity {
             @Override
             public void onLogout(Object o) {
                 Log.d(TAG, "onLogout: " + o);
+                //doStartWeb();
+                doExitGame();
             }
         });
 
+        doInit(null);
+    }
+
+    @Override
+    protected void doNativeCall(String key, HashMap<String,String> map) {
+        super.doNativeCall(key, map);
+
+        switch (key){
+            case "info":
+                try {
+                    HashMap<String,String> datas = new HashMap<>();
+                   if(map.containsKey("_id")){
+                       datas.put("_id", map.get("_id"));
+                   }else {
+                       datas.put("_id", "enterServer");
+                   }
+                    datas.put("roleId", "13524696");
+                    datas.put("roleName", "方木");
+                    datas.put("roleLevel", "24");
+                    datas.put("zoneId", "1");
+                    datas.put("zoneName", "墨土1区");
+                    datas.put("balance", "88");
+                    datas.put("vip", "2");
+                    datas.put("partyName", "无尽天涯");
+                    datas.put("extra","extra");
+
+                    JSONObject json=new JSONObject(datas);
+
+                    GameProxy.getInstance().setExtData(this,json.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "doLogout":
+                GameProxy.getInstance().logout(this,null);
+                break;
+        }
+
+    }
+
+    @Override
+    protected void doInit(Map o) {
 
         GameProxy.getInstance().init(this, new XMInitCallback() {
             @Override
@@ -148,12 +194,22 @@ public class MainActivity extends BaseWebActivity {
         GameProxy.getInstance().exit(this, new LJExitCallback() {
             @Override
             public void onGameExit() {
+                Log.e(TAG, "exit application");
+                MainActivity.this.doExit(false);
             }
 
             @Override
             public void onChannelExit() {
+                gameExitEvent();
             }
         });
+    }
+
+    @Override
+    protected void gameExitEvent() {
+        GameProxy.getInstance().applicationDestroy(MainActivity.this);
+        MainActivity.this.finish();
+        System.exit(0);
     }
 
     protected void doStartWeb() {
@@ -161,7 +217,6 @@ public class MainActivity extends BaseWebActivity {
         long t=date.getTime();
         String url =String.format("http://gate.shushanh5.lingyunetwork.com/gate/micro/login.aspx?t=%d&p=lingjin",t);
         //url="file:///android_asset/test.html";
-
         Log.d(TAG, "doStartWeb: "+url);
         webView.loadUrl(url);
     }
@@ -174,23 +229,24 @@ public class MainActivity extends BaseWebActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            exit();
+            //exit();
+            doExitGame();
             return true;
         }
 
         return super.onKeyDown(keyCode, event);
     }
-    private long clickTime=0;
-    private void exit() {
-        if ((System.currentTimeMillis() - clickTime) > 2000) {
-            Toast.makeText(getApplicationContext(), "再次点击退出",  Toast.LENGTH_SHORT).show();
-            clickTime = System.currentTimeMillis();
-        } else {
-            Log.e(TAG, "exit application");
-            this.finish();
-            System.exit(0);
-        }
-    }
+//    private long clickTime=0;
+//    private void exit() {
+//        if ((System.currentTimeMillis() - clickTime) > 2000) {
+//            Toast.makeText(getApplicationContext(), "再次点击退出",  Toast.LENGTH_SHORT).show();
+//            clickTime = System.currentTimeMillis();
+//        } else {
+//            Log.e(TAG, "exit application");
+//            this.finish();
+//            System.exit(0);
+//        }
+//    }
 
     @Override
     protected void onStop() {
@@ -220,6 +276,12 @@ public class MainActivity extends BaseWebActivity {
     protected void onRestart() {
         super.onRestart();
         GameProxy.getInstance().onRestart(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        GameProxy.getInstance().onResume(this);
     }
 
     @Override
