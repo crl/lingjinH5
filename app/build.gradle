@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "27.0.1"
+    buildToolsVersion "27.0.2"
     defaultConfig {
-        applicationId "com.ljapps.p3693"
+        applicationId "com.lingyu.lingjinh5"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
-        versionName "1.1"
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -17,14 +17,103 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
+    flavorDimensions "default"
+    productFlavors {
+        lingjin {
+            dimension "default"
+            applicationId "com.ljapps.p3693"
+            minSdkVersion 19
+            targetSdkVersion 19
+        }
+        tencent {
+            dimension "default"
+            applicationId "com.tencent.tmgp.shushan"
+        }
+        xiaomi {
+            dimension "default"
+            applicationId "com.biyue.shushan.xiaomi"
+        }
+        sogou {
+            dimension "default"
+            applicationId "com.biyue.shushan.sogou"
+        }
+        baidu {
+            dimension "default"
+            applicationId "com.biyue.shushan.baidu"
+        }
+        huawei {
+            dimension "default"
+            applicationId "com.biyue.shushan.huawei"
+        }
+        lenovo {
+            dimension "default"
+            applicationId "com.biyue.shushan.lenovo"
+        }
+        anzhi {
+            dimension "default"
+            applicationId "com.biyue.shushan.anzhi"
+        }
+        coolapk {
+            dimension "default"
+            applicationId "com.biyue.shushan.coolpad"
+        }
+        jinli {
+            dimension "default"
+            applicationId "com.biyue.shushan.jinli"
+        }
+        aligames {
+            dimension "default"
+            applicationId "com.biyue.shushan.aligames"
+        }
+        a360 {
+            dimension "default"
+            applicationId "ccom.biyue.shushan.qihu"
+        }
+        a4399 {
+            dimension "default"
+            applicationId "com.biyue.shushan.jiujiu"
+        }
+        meizu {
+            dimension "default"
+            applicationId "com.biyue.shushan.mz"
+        }
+        am {
+            dimension "default"
+            applicationId "youxi.shushan.am"
+        }
+        wdj {
+            dimension "default"
+            applicationId "com.biyue.shushan.wdj"
+        }
+        sogou {
+            dimension "default"
+            applicationId "biyue.shushan.sogou.com"
+        }
+        anqu {
+            dimension "default"
+            applicationId "com.biyue.shushan.anqu"
+        }
+        muzhiwan {
+            dimension "default"
+            applicationId "com.biyue.shushan.muzhiwan"
+        }
+        am {
+            dimension "default"
+            applicationId "youxi.thxg.am"
+        }
+    }
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+
+
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:support-v4:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.android.support:design:26.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
