@@ -43,7 +43,7 @@ public class BaseWebActivity extends Activity {
         viewLayout.setLayoutParams(layoutParams);
         this.setContentView(viewLayout);
 
-        //WebView.setWebContentsDebuggingEnabled(true);
+
 
         webView = new WebView(this);
 
@@ -53,7 +53,7 @@ public class BaseWebActivity extends Activity {
 
     protected void bindWebView(WebView webView){
         this.webView=webView;
-
+        webView.setWebContentsDebuggingEnabled(true);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowFileAccess(true);

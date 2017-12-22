@@ -45,10 +45,6 @@ public class MainActivity extends BaseWebActivity {
             @Override
             public void onLoginSuccess(XMUser xmUser, Object o) {
                 Log.d(TAG, "onLoginSuccess: " + xmUser.getUserID());
-                //doStartWeb(xmUser);
-
-                //boolean isChange=currentLoginUser!=xmUser;
-
                 currentLoginUser=xmUser;
                 try {
                     JSONObject json = new JSONObject();
@@ -59,9 +55,10 @@ public class MainActivity extends BaseWebActivity {
                     json.put("channelCode", xmUser.getChannelCode());
                     json.put("channelUserId", xmUser.getChannelUserId());
 
+                    Log.d(TAG, "doLogin: " + json.toString());
                     javascriptCall("doLogin", json.toString());
                 }catch (Exception ex){
-
+                    Log.d(TAG, "onLoginSuccessError: "+ex);
                 }
                 boolean isTest=false;
                 if(isTest) {
