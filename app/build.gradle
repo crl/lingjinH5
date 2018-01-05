@@ -103,6 +103,11 @@ android {
             dimension "default"
             applicationId "youxi.thxg.am"
         }
+
+        mzw {
+            dimension "default"
+            applicationId "com.biyue.shushan.mzw"
+        }
     }
     productFlavors.all {
         flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]

@@ -14,6 +14,7 @@ import com.xinmei365.game.proxy.GameProxy;
 import com.xinmei365.game.proxy.PayCallBack;
 import com.xinmei365.game.proxy.XMUser;
 import com.xinmei365.game.proxy.XMUserListener;
+import com.xinmei365.game.proxy.XMUtils;
 import com.xinmei365.game.proxy.exit.LJExitCallback;
 import com.xinmei365.game.proxy.init.XMInitCallback;
 import com.xinmei365.game.proxy.pay.XMPayParams;
@@ -54,6 +55,7 @@ public class MainActivity extends BaseWebActivity {
                     json.put("productCode", xmUser.getProdcutCode());
                     json.put("channelCode", xmUser.getChannelCode());
                     json.put("channelUserId", xmUser.getChannelUserId());
+                    json.put("channelLabel", xmUser.getChannelLabel());
 
                     Log.d(TAG, "doLogin: " + json.toString());
                     javascriptCall("doLogin", json.toString());
@@ -145,6 +147,7 @@ public class MainActivity extends BaseWebActivity {
             public void onInitSuccess() {
                 //初始化成功之后才可调用其他接口
                 Log.d(TAG, "onInitSuccess: ");
+
                 doStartWeb();
             }
 
@@ -218,9 +221,17 @@ public class MainActivity extends BaseWebActivity {
     }
 
     protected void doStartWeb() {
+
+        String channelLabel=XMUtils.getChannelLabel(this);
+        ////todo other;
+        if(channelLabel.equals("baidumobilegame")){
+        }
+
+
         Date date=new Date();
         long t=date.getTime();
-        String url =String.format("http://gate.shushanh5.lingyunetwork.com/gate/micro/login.aspx?t=%d&p=lingjin",t);
+
+        String url =String.format("http://test.shushanh5.lingyunetwork.com/gate/micro/login.aspx?t=%d&p=lingjin&td_channelid=%s",t,channelLabel);
         //url="file:///android_asset/test.html";
         Log.d(TAG, "doStartWeb: "+url);
         webView.loadUrl(url);
