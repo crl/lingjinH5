@@ -231,7 +231,7 @@ public class MainActivity extends BaseWebActivity {
         Date date=new Date();
         long t=date.getTime();
 
-        String url =String.format("http://test.shushanh5.lingyunetwork.com/gate/micro/login.aspx?t=%d&p=lingjin&td_channelid=%s",t,channelLabel);
+        String url =String.format("http://test.shushanh5.lingyunetwork.com/gate/micro/login.aspx?t=%d&p=lingjin&td_channelid=lingjin_%s",t,channelLabel);
         //url="file:///android_asset/test.html";
         Log.d(TAG, "doStartWeb: "+url);
         webView.loadUrl(url);
