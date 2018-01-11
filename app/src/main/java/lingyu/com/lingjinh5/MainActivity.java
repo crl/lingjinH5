@@ -41,6 +41,7 @@ public class MainActivity extends BaseWebActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        doStartWeb();
 
         GameProxy.getInstance().setUserListener(this, new XMUserListener() {
             @Override
@@ -100,7 +101,6 @@ public class MainActivity extends BaseWebActivity {
         });
 
         doInit(null);
-
         GameProxy.getInstance().onCreate(this);
     }
 
@@ -147,8 +147,6 @@ public class MainActivity extends BaseWebActivity {
             public void onInitSuccess() {
                 //初始化成功之后才可调用其他接口
                 Log.d(TAG, "onInitSuccess: ");
-
-                doStartWeb();
             }
 
             @Override
@@ -231,7 +229,7 @@ public class MainActivity extends BaseWebActivity {
         Date date=new Date();
         long t=date.getTime();
 
-        String url =String.format("http://test.shushanh5.lingyunetwork.com/gate/micro/login.aspx?t=%d&p=lingjin&td_channelid=lingjin_%s",t,channelLabel);
+        String url =String.format("http://gate.shushanh5.lingyunetwork.com/gate/micro/login.aspx?t=%d&p=lingjin&td_channelid=lingjin_%s",t,channelLabel);
         //url="file:///android_asset/test.html";
         Log.d(TAG, "doStartWeb: "+url);
         webView.loadUrl(url);

@@ -40,10 +40,9 @@ public class BaseWebActivity extends Activity {
         //requestWindowFeature(1);
         layoutParams=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         viewLayout=new FrameLayout(this);
+        viewLayout.setBackgroundColor(Color.BLACK);
         viewLayout.setLayoutParams(layoutParams);
         this.setContentView(viewLayout);
-
-
 
         webView = new WebView(this);
 
@@ -60,7 +59,7 @@ public class BaseWebActivity extends Activity {
         webSettings.setBuiltInZoomControls(false);
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         webSettings.setDatabaseEnabled(true);
-        webView.setBackgroundColor(Color.parseColor("#00000000"));
+        webView.setBackgroundColor(Color.BLACK);
         webSettings.setDomStorageEnabled(true);
         webSettings.setGeolocationEnabled(true);
 
