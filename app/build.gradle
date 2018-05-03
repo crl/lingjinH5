@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "27.0.2"
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.lingyu.lingjinh5"
         minSdkVersion 15
@@ -103,10 +103,17 @@ android {
             dimension "default"
             applicationId "youxi.thxg.am"
         }
-
         mzw {
             dimension "default"
             applicationId "com.biyue.shushan.mzw"
+        }
+        gamecenter {
+            dimension "default"
+            applicationId "com.sszsj.nearme.gamecenter"
+        }
+        samsung {
+            dimension "default"
+            applicationId "com.sszsj.samsung"
         }
     }
     productFlavors.all {
